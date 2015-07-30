@@ -1,4 +1,5 @@
 # setwd('C:/Users/iliu2/Documents/Downloads/afl')
+rm(list=ls())
 setwd('/Users/ivanliu/Google Drive/Competition/Sportsbet_AFL_Competition')
 # 0. Read the Data
 teams <- read.csv("data/teams.csv", stringsAsFactors = F)
@@ -23,7 +24,8 @@ train_df$round <- as.integer(substr(train_df$round,2,length(train_df$round)))
 train_df$tid1 <- as.factor(train_df$tid1)
 train_df$tid2 <- as.factor(train_df$tid2)
 train_df$tid1_loc <- as.factor(train_df$tid1_loc)
-train_df$prob <- as.factor(train_df$prob);#levels(train_df$prob) <- c('Yes','No')
+#train_df$prob <- as.factor(train_df$prob);#levels(train_df$prob) <- c('Yes','No')
+train_df$prob <- ifelse(train_df$prob == 1, 'Yes', 'No')
 
 # Caret Model
 library(caret)
@@ -49,15 +51,15 @@ fitControl <- trainControl(method = "adaptive_cv",
                                            complete = TRUE))
 
 set.seed(825)
-fit <- train(prob~., data=train,
+fit <- train(y=train$prob, x=train[,-1], data=train,
                 method = "rf",
                 trControl = fitControl,
                 preProc = c("center", "scale"),
                 tuneLength = 8,
-                metric = "svmRadial")
+                metric = "ROC")
 
 # Test
-p <- predict(fit, test, type="response")
+p <- predict(fit, test, type='prob')
 
 LogLoss<-function(actual, predicted)
 {
@@ -67,7 +69,7 @@ LogLoss<-function(actual, predicted)
   return(result)
 }
 
-LogLoss(as.numeric(test$prob),as.numeric(p))
+LogLoss(as.numeric(test$prob)-1,as.numeric(p)-1)
 
 
 
