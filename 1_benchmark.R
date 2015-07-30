@@ -1,8 +1,9 @@
-setwd('C:/Users/iliu2/Documents/Downloads/afl')
+# setwd('C:/Users/iliu2/Documents/Downloads/afl')
+setwd('/Users/ivanliu/Google Drive/Competition/Sportsbet_AFL_Competition')
 # 0. Read the Data
-teams <- read.csv("teams.csv", stringsAsFactors = F)
-seasons <- read.csv("seasons.csv", stringsAsFactors = F)
-unplayed <- read.csv("unplayed.csv", stringsAsFactors = F)
+teams <- read.csv("data/teams.csv", stringsAsFactors = F)
+seasons <- read.csv("data/seasons.csv", stringsAsFactors = F)
+unplayed <- read.csv("data/unplayed.csv", stringsAsFactors = F)
 
 # 1. Generate Training Data
 # Derive training data from the 2011 to 2014 AFL season statistics
