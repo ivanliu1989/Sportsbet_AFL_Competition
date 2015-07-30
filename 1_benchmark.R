@@ -54,7 +54,7 @@ fit <- train(prob~., data=train,
                 trControl = fitControl,
                 preProc = c("center", "scale"),
                 tuneLength = 8,
-                metric = "ROC")
+                metric = "svmRadial")
 
 # Test
 p <- predict(fit, test, type="response")
